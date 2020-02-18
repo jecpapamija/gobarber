@@ -1,3 +1,4 @@
+import { isBefore } from 'date-fns';
 import Sequelize, { Model } from 'sequelize';
 
 class Appointments extends Model {
@@ -6,6 +7,12 @@ class Appointments extends Model {
       {
         date: Sequelize.DATE,
         canceled_at: Sequelize.DATE,
+        past: {
+          type: Sequelize.VIRTUAL,
+          get() {
+            return isBefore(this.date, new Date());
+          },
+        },
       },
       {
         sequelize,
